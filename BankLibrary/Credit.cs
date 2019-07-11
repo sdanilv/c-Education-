@@ -16,7 +16,7 @@ namespace BankLibrary
         {
             Days++;
             Credit = creditAfterMonth(Credit);
-            Console.WriteLine("your credit "+ Credit);
+            Console.WriteLine($"Credit of account {Id} is {Credit}");
         }
 
         public override void Put(decimal summ)

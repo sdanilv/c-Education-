@@ -32,9 +32,14 @@ namespace BankAplication
                         case "4":
                             CloseAccount();
                             break;
-                      
+                        case "5":
+                            Console.WriteLine("Write id");
+                            OpenAccount(Convert.ToInt32(Console.ReadLine()));
+                            break;
+
                     }
                     bank.DayGone();
+                    Console.WriteLine("---------------------------\n" + "Your id now " + id);
 
                 }
                 catch (Exception ex)
@@ -82,7 +87,9 @@ namespace BankAplication
             {
                 Console.WriteLine("How much you want to put");
                 Decimal.TryParse(Console.ReadLine(), out decimal summ);
-                bank.Open(new DepositAccount(summ, TypeDeposit.Bronze));
+                DepositAccount depositAccount = new DepositAccount(summ, TypeDeposit.Bronze);
+                id = depositAccount.Id;
+                bank.Open(depositAccount);
             }
 
         }
@@ -97,8 +104,9 @@ namespace BankAplication
         {
             
             Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
-            Console.WriteLine("1. Открыть счет \t 2. Вывести средства  ");
+            Console.WriteLine("1. Add new account\t 2. Вывести средства  ");
             Console.WriteLine("3.Добавить на счет\t 4. Закрыть счет  ");
+            Console.WriteLine("5.Open account \t ");
             Console.WriteLine("Введите номер пункта:");
             Console.ForegroundColor = ConsoleColor.Gray;
         }

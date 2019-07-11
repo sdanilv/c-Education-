@@ -35,7 +35,7 @@ namespace BankLibrary
         {
 
             AmmountMoney += summ;
-            Send($"You recive {summ}$ into you {typeOfAccount} account");
+            Send($"You recive {summ}$ into you {typeOfAccount} account {Id}. Now {AmmountMoney}$.");
         }
 
         public virtual decimal Withdraw(decimal withdraw)
@@ -46,7 +46,7 @@ namespace BankLibrary
                 return AmmountMoney;
             }
             AmmountMoney -= withdraw;
-            Send($"You pay {withdraw}$. Now in you {typeOfAccount} account {AmmountMoney}");
+            Send($"You pay {withdraw}$. Now in you {typeOfAccount} account  {Id}  {AmmountMoney}$");
             return AmmountMoney;
         }
         public virtual void DayGone() {}
