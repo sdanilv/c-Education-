@@ -9,7 +9,7 @@ namespace BankLibrary
         static int staticId;
         private string typeOfAccount;
         //private string fullName;
-
+        
         public decimal AmmountMoney { get => ammountMoney; private set => ammountMoney = value; }
         public int Id { get => id;  }
 
@@ -49,6 +49,7 @@ namespace BankLibrary
             Send($"You pay {withdraw}$. Now in you {typeOfAccount} account {AmmountMoney}");
             return AmmountMoney;
         }
+        public virtual void DayGone() {}
 
         public Account(string type) : this(type, 0) { }
         public Account(string type, decimal sum)
@@ -62,5 +63,6 @@ namespace BankLibrary
         {
             return $"This {typeOfAccount} account, has id {Id}";
         }
+        
     }
 }

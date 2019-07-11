@@ -12,13 +12,19 @@ namespace BankLibrary
         private decimal Credit { set; get; } = 0;
         public int Percent { get => percent; }
         public int Days { get => days; private set => days = value; }
-
+        public override void DayGone()
+        {
+            Days++;
+            Credit = creditAfterMonth(Credit);
+            Console.WriteLine("your credit "+ Credit);
+        }
 
         public override void Put(decimal summ)
         {
-            if (Credit == 0)
+            if (Credit < summ)
             {
-                base.Put(summ);
+                Credit = 0;
+                base.Put(summ - Credit);
                 return;
             }
             Credit -= summ;
@@ -28,7 +34,6 @@ namespace BankLibrary
             if (AmmountMoney <= withdraw)
             {
                 Credit += withdraw - AmmountMoney;
-                base.Withdraw(AmmountMoney);
                 percent = loanInterestCalculation(duration);
                 days = 0;
                 return 0;
@@ -40,6 +45,8 @@ namespace BankLibrary
         {
             Credit = credit;
             duration = lasting;
+            percent = loanInterestCalculation(lasting);
+
         }
         public CreditAccount(int sum, int lasting) : base("CREDIT", sum) 
         {
@@ -49,7 +56,7 @@ namespace BankLibrary
 
         private int loanInterestCalculation(int continuance)
         {
-            return continuance / 150;
+            return continuance / 15;
         }
 
         public decimal creditAfterDuration()

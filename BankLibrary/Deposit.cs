@@ -15,6 +15,10 @@ namespace BankLibrary
             percent = (int)type;
             days = 0;
         }
+
+        public override void DayGone() {
+            Put(AmmountMoney * Percent / 100);
+        }
     }
     public enum TypeDeposit
     {

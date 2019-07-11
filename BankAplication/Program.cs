@@ -6,9 +6,10 @@ namespace BankAplication
     class Program
     {
         static Bank<Account> bank = new Bank<Account>("FBank");
-        int id;
+        static int id;
         static void Main(string[] args)
         {
+
             while (true)
             {
 
@@ -20,20 +21,20 @@ namespace BankAplication
                     switch (command)
                     {
                         case "1":
-                            OpenAccount(bank);
+                            AddAccount();
                             break;
                         case "2":
-                            Withdraw(bank);
+                            Withdraw();
                             break;
                         case "3":
-                            Put(bank);
+                            Put();
                             break;
                         case "4":
-                            CloseAccount(bank);
+                            CloseAccount();
                             break;
-                        case "5":
-                            break;
+                      
                     }
+                    bank.DayGone();
 
                 }
                 catch (Exception ex)
@@ -43,8 +44,27 @@ namespace BankAplication
                 }
             }
         }
+        
+        private static void CloseAccount()
+        {
+            bank.Close(id);
+        }
 
-        private static void OpenAccount(Bank<Account> bank)
+        private static void Put()
+        {
+            Console.WriteLine("How many you want to put?");
+            Decimal.TryParse(Console.ReadLine(), out decimal summ);
+            bank.Put(summ, id);
+        }
+
+        private static void Withdraw()
+        {
+            Console.WriteLine("How many you want to get?");
+            Decimal.TryParse(Console.ReadLine(), out decimal withdraw);
+            bank.Withdraw(withdraw, id);
+        }
+
+        private static void AddAccount()
         {
             Console.WriteLine("If you want: credit press 1, debit 2");
             if (Console.ReadLine().Equals("1"))
@@ -54,8 +74,9 @@ namespace BankAplication
                 Console.WriteLine("How much you want to take");
                 Decimal.TryParse(Console.ReadLine(), out decimal credit);
                 CreditAccount creditAccount = new CreditAccount(0, timeRepay, credit);
+                id = creditAccount.Id;
                 bank.Open(creditAccount);
-                
+
             }
             else
             {
@@ -65,15 +86,21 @@ namespace BankAplication
             }
 
         }
+        private static void OpenAccount(int _id)
+        {
+            id = _id;
+        }
+
+
 
         private static void WriteIntoConsole()
         {
-            ConsoleColor color = Console.ForegroundColor;
+            
             Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
-            Console.WriteLine("1. Открыть счет \t 2. Вывести средства  \t 3. Добавить на счет");
-            Console.WriteLine("4. Закрыть счет \t 5. Пропустить день \t 6. Выйти из программы");
+            Console.WriteLine("1. Открыть счет \t 2. Вывести средства  ");
+            Console.WriteLine("3.Добавить на счет\t 4. Закрыть счет  ");
             Console.WriteLine("Введите номер пункта:");
-            Console.ForegroundColor = color;
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }

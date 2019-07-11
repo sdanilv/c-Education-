@@ -18,9 +18,11 @@ namespace BankAplication
 
         public void Open(T account)
         {
+            account.Send += str => Console.WriteLine(str);
             if (accounts == null)
                 accounts = new T[] { account };
             else
+            {
                 for (int i = 0; i < accounts.Length; i++)
                 {
                     if (accounts[i].Equals(account))
@@ -30,31 +32,39 @@ namespace BankAplication
                     }
                 }
 
-            T[] tempAccounts = new T[accounts.Length + 1];
-            accounts.CopyTo(tempAccounts, 0);
-            tempAccounts[accounts.Length] = account;
-            accounts = tempAccounts;
+                T[] tempAccounts = new T[accounts.Length + 1];
+                accounts.CopyTo(tempAccounts, 0);
+                tempAccounts[accounts.Length] = account;
+                accounts = tempAccounts;
+            }
         }
 
         public void Close(int id)
         {
+
             int i = FindIndexForID(id);
             if (i == -1) return;
-
-            accounts[i].DeleteAcount();
-            T[] tempAccounts = new T[accounts.Length - 1];
-
-            for (int j = 0; j < i; j++)
+            if (accounts.Length != 1)
             {
-                tempAccounts[j] = accounts[j];
+                accounts[i].DeleteAcount();
+                T[] tempAccounts = new T[accounts.Length - 1];
 
+                for (int j = 0; j < i; j++)
+                {
+                    tempAccounts[j] = accounts[j];
+
+                }
+                for (int j = i; j < accounts.Length; j++)
+                {
+
+                    tempAccounts[j - 1] = accounts[j];
+                }
+                accounts = tempAccounts;
             }
-            for (int j = i; j < accounts.Length; j++)
+            else
             {
-
-                tempAccounts[j - 1] = accounts[j];
+                accounts = null;
             }
-            accounts = tempAccounts;
         }
 
 
@@ -93,6 +103,15 @@ namespace BankAplication
         public static implicit operator Bank<T>(Bank<DepositAccount> v)
         {
             throw new NotImplementedException();
+        }
+
+        public void DayGone()
+        {
+            if (accounts == null) return;
+            foreach (T acc in accounts)
+            {
+                acc.DayGone();
+            }
         }
     }
 
