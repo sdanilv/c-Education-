@@ -10,7 +10,7 @@ namespace BankLibrary
         private int percent;
         private int days;
         private int duration;
-        private decimal creditLimit = 1000000;
+        private const decimal creditLimit = 1000000;
         private decimal Credit { set; get; } = 0;
         public int Percent { get => percent; }
         public int Days { get => days; private set => days = value; }
@@ -20,7 +20,6 @@ namespace BankLibrary
             Credit = creditAfterMonth(Credit);
             Send($"Credit of account {Id} is {Credit}");
         }
-
         public override void Put(decimal summ)
         {
             if (Credit < summ)
@@ -39,12 +38,10 @@ namespace BankLibrary
                 return 0; }
             if (AmmountMoney <= withdraw)
             {
-                Credit += withdraw - AmmountMoney;
-                
+                Credit += withdraw - AmmountMoney;               
                 percent = loanInterestCalculation(duration);
                 return 0;
             }
-
             return base.Withdraw(withdraw);
         }
         public CreditAccount(int sum, int lasting, decimal credit) : base("CREDIT", sum)
@@ -52,19 +49,12 @@ namespace BankLibrary
             Credit = credit;
             duration = lasting;
             percent = loanInterestCalculation(lasting);
-
         }
         public CreditAccount(int sum, int lasting) : base("CREDIT", sum) 
         {
             Credit = 0;
             duration = lasting;
-        }
-
-        private int loanInterestCalculation(int continuance)
-        {
-            return continuance / 15;
-        }
-
+        }      
         public decimal creditAfterDuration()
         {
             decimal summ = Credit;
@@ -74,13 +64,14 @@ namespace BankLibrary
             }
             return summ;
         }
-
-
         public decimal creditAfterMonth(decimal summ)
         {
             return summ + summ * percent / 100;
         }
-
+        private int loanInterestCalculation(int continuance)
+        {
+            return continuance / 15;
+        }
     }
 
 }
