@@ -6,9 +6,11 @@ namespace BankLibrary
 {
     public class CreditAccount : Account
     {
+        public new event Messenger Send;
         private int percent;
         private int days;
         private int duration;
+        private decimal creditLimit = 1000000;
         private decimal Credit { set; get; } = 0;
         public int Percent { get => percent; }
         public int Days { get => days; private set => days = value; }
@@ -16,7 +18,7 @@ namespace BankLibrary
         {
             Days++;
             Credit = creditAfterMonth(Credit);
-            Console.WriteLine($"Credit of account {Id} is {Credit}");
+            Send($"Credit of account {Id} is {Credit}");
         }
 
         public override void Put(decimal summ)
@@ -31,11 +33,15 @@ namespace BankLibrary
         }
         public override decimal Withdraw(decimal withdraw)
         {
+            if (Credit > creditLimit)
+            {
+                Send("You haw out credit limit");
+                return 0; }
             if (AmmountMoney <= withdraw)
             {
                 Credit += withdraw - AmmountMoney;
+                
                 percent = loanInterestCalculation(duration);
-                days = 0;
                 return 0;
             }
 

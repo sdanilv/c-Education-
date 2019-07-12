@@ -7,7 +7,7 @@ namespace BankAplication
 {
     class Bank<T> where T : Account
     {
-
+        
         T[] accounts;
         string name;
 
@@ -16,9 +16,13 @@ namespace BankAplication
             this.name = name;
         }
 
-        public void Open(T account)
+        public void Add(T account)
         {
-            account.Send += str => Console.WriteLine(str);
+            account.Send += str => {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine(str);
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }; 
             if (accounts == null)
                 accounts = new T[] { account };
             else
@@ -46,7 +50,7 @@ namespace BankAplication
             if (i == -1) return;
             if (accounts.Length != 1)
             {
-                accounts[i].DeleteAcount();
+                accounts[i] = null;
                 T[] tempAccounts = new T[accounts.Length - 1];
 
                 for (int j = 0; j < i; j++)
@@ -54,10 +58,10 @@ namespace BankAplication
                     tempAccounts[j] = accounts[j];
 
                 }
-                for (int j = i; j < accounts.Length; j++)
+                for (int j = i; j < accounts.Length-1; j++)
                 {
 
-                    tempAccounts[j - 1] = accounts[j];
+                    tempAccounts[j] = accounts[j+1];
                 }
                 accounts = tempAccounts;
             }
@@ -67,6 +71,26 @@ namespace BankAplication
             }
         }
 
+        internal void ChangeDeposit(int id)
+        {
+            TypeDeposit type = TypeDeposit.Bronze;
+            Console.WriteLine("What type you want: \n1: Bronze = 10%, 2: Silver = 20%, 3: Gold = 30%");
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    type = TypeDeposit.Bronze;
+                    break;
+                case "2":
+                    type = TypeDeposit.Silver;
+                    break;
+                case "3":
+                    type = TypeDeposit.Gold;
+                    break;
+            }
+            Console.WriteLine("You percent now: "+(accounts[FindIndexForID(id)] as DepositAccount).changeDeposit(type).Percent + "%"); 
+
+
+        }
 
         public void Put(decimal summ, int id)
         {
@@ -89,7 +113,7 @@ namespace BankAplication
             //return -1;
         }
 
-        private T FindAccountForID(int id)
+        public T FindAccountForID(int id)
         {
             for (int i = 0; i < accounts.Length; i++)
             {
@@ -112,6 +136,11 @@ namespace BankAplication
             {
                 acc.DayGone();
             }
+        }
+
+        public bool HasAccounts() {
+            if (accounts == null) return false;
+            return true;
         }
     }
 

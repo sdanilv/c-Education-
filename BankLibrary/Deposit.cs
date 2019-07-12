@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BankLibrary
 {
-   public class DepositAccount : Account
+    public class DepositAccount : Account
     {
         private int percent;
         private int days;
@@ -16,10 +16,31 @@ namespace BankLibrary
             days = 0;
         }
 
-        public override void DayGone() {
+        public override void DayGone()
+        {
             Put(AmmountMoney * Percent / 100);
+        }
+
+        public decimal AmountOfIncome(int month)
+        {
+            decimal depos = AmmountMoney;
+
+            decimal counter(decimal summ)
+            {
+                return summ + summ * Percent / 100;
+            }
+            for (int i = 0; i < month; i++)
+            {
+                depos = counter(depos);
+            }
+            return depos;
 
         }
+        public DepositAccount changeDeposit(TypeDeposit type) {
+            percent = (int)type;
+            return this;
+        }
+
     }
     public enum TypeDeposit
     {
