@@ -86,11 +86,12 @@ namespace BankAplication
         }
         public void DayGone()
         {
+            Console.WriteLine("---------------------------\n");
             if (accounts == null) return;
-            foreach (T acc in accounts)
-            {
+            foreach (T acc in accounts)          
                 acc.DayGone();
-            }
+            Console.WriteLine("---------------------------\n" );
+
         }
         public bool HasAccounts()
         {
